@@ -17,6 +17,19 @@ digit [0-9]
 "//".*      { printToken("COMMENT", yytext); }
 "cout"      { printToken("COUT", NULL); }
 <<EOF>>     { static int once = 0; if (once++) {yyterminate();} }
+"int"       { printToken("INT_T", NULL); }
+"\n"        { yylineno++; }
+" "         { /* ignore white space */ }
+"("         { printToken("(", "("); }
+")"         { printToken(")", ")"); }
+"["         { printToken("[", "["); }
+"]"         { printToken("]", "]"); }
+"{"         { printToken("{", "{"); }
+"}"         { printToken("}", "}"); }
+";"         { printToken(";", ";"); }
+":"         { printToken(":", ":"); }
+","         { printToken(",", ","); }
+
 
 %%
 /*  C Code section */
