@@ -7,9 +7,10 @@
     FILE* fout;
 %}
 
-/* Define regular expression label */
+/* Define regular expression label and state */
 letter [a-zA-Z_]
 digit [0-9]
+%x MULTI_COMMENT
 
 /* Rules section */
 %%
@@ -80,13 +81,32 @@ digit [0-9]
 "true"     { printToken("BOOL_LIT", "true"); }
 "false"    { printToken("BOOL_LIT", "false"); }
 
+
+"/*" {
+    yymore();
+    BEGIN MULTI_COMMENT;
+}
+
+<MULTI_COMMENT>{
+    "*/" {
+        printToken("MULTI_COMMENT", yytext);
+        BEGIN 0;
+    }
+    \n {
+        yylineno++;
+        yymore();
+    }
+    . {
+        yymore();
+    }
+}
+
+
 \"(\\.|[^"\\])*\" { printToken("STRING_LIT", yytext); } 
 {digit}+    { printToken("INT_LIT", yytext); }
 {letter}({letter}|{digit})* { printToken("IDENT", yytext); }
 {digit}+\.{digit}* { printToken("FLOAT_LIT", yytext); }
 \'(\\.|[^'\\])\' { printToken("CHAR_LIT", yytext); }
-
-
 
 
 %%
