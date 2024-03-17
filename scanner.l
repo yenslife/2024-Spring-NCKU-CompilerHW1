@@ -34,7 +34,7 @@ digit [0-9]
 "&"         { printToken("BAN", NULL); }
 "|"         { printToken("BOR", NULL); }
 "~"         { printToken("BNT", NULL); }
-"^"         { printToken("BXOR", NULL); }
+"^"         { printToken("BXO", NULL); }
 "+"          { printToken("ADD", NULL); }
 "-"          { printToken("SUB", NULL); }
 "*"          { printToken("MUL", NULL); }
